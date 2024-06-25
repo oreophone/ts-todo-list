@@ -1,0 +1,458 @@
+:root {
+    font-family: "Courier Prime";
+    font-size: var(--f-maj);
+    /* root colors */
+    --alert-color: #f20d0d;
+    --bg-color: #222424;
+    --check-color: #22b315;
+    --check-color-shadow: #136c0b;
+    --desc-text-color: var(--light-color);
+    --light-color: #797979;
+    --light-text-color: #d9d9d9;
+    --maj-color: #383838;
+    --maj-text-color: #c3c3c3;
+    --write-color: #1b1b1b;
+    --write-text-color: var(--light-color);
+
+    /* font sizes */
+    --f-title: 20px;
+    --f-maj: 14px;
+    --f-min: 12px;
+
+    /* vertical spacings */
+    --v-bottom-padding: calc(4 * var(--v-task-height));
+    --v-check-box-height: 19px;
+    --v-desc-box-min-height: calc(3 * var(--v-task-height) + 2 * var(--v-edit-box-spacing));
+    --v-edit-box-spacing: 9px;
+    --v-priority-box-gap: 15px;
+    --v-margin: 80px;
+    --v-priority-selection-box-height: var(--v-task-spacing);
+    --v-priority-selection-icon-height: calc(var(--v-task-height) - 2 * var(--v-edit-box-spacing));
+    --v-priority-trash-box-height: var(--v-check-box-height);
+    --v-task-desc-spacing: 35px;
+    --v-task-height: 29px;
+    --v-task-spacing: 23px;
+    --v-icon-padding: 6px;
+    --v-icon-box-height: calc(3 * var(--v-task-height) + 2 * var(--v-edit-box-spacing));
+
+    /* horizontal spacings */
+    --h-icon-box-width: var(--v-task-height);
+    --h-icon-to-task: 27px;
+    --h-maj-bar-width: calc(2 * var(--h-min-bar-width));
+    --h-margin: 100px;
+    --h-min-bar-width: 72px;
+    --h-task-padding: 10px;
+    --h-icon-padding: var(--v-icon-padding);
+    --h-icon-area-width: calc(1.7 * var(--v-task-height));
+
+    /* corner radii */
+    --r-check: 6px;
+    --r-priority-box: 8px;
+    --r-task: 10px;
+
+    --outline-style: 2px solid #145B9C;
+}
+
+@font-face {
+    font-family: 'Courier Prime';
+    src: url('fonts/CourierPrime-Bold.woff') format('woff'),
+        url('fonts/CourierPrime-Bold.ttf') format('truetype');
+    font-weight: bold;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Courier Prime';
+    src: url('fonts/CourierPrime-BoldItalic.woff') format('woff'),
+        url('fonts/CourierPrime-BoldItalic.ttf') format('truetype');
+    font-weight: bold;
+    font-style: italic;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Courier Prime';
+    src: url('fonts/CourierPrime-Italic.woff') format('woff'),
+        url('fonts/CourierPrime-Italic.ttf') format('truetype');
+    font-weight: normal;
+    font-style: italic;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Courier Prime';
+    src: url('fonts/CourierPrime-Regular.woff') format('woff'),
+        url('fonts/CourierPrime-Regular.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+:focus{
+    outline: var(--outline-style);
+}
+div:focus {
+    outline: none;
+}
+
+/* || main */
+body {
+    background: var(--bg-color);
+}
+
+#main-holder {
+    margin-left: var(--h-margin);
+    margin-right: var(--h-margin);
+    margin-top: var(--v-margin);
+
+}
+
+input[type=text] /* TODO add hover, selected, */{
+    font-family: "Courier Prime";
+    font-size: var(--f-maj);
+    width: 100%;
+    height: var(--v-task-height);
+    background: var(--write-color);
+    color: var(--write-text-color);
+    border: none;
+    padding-left: var(--h-task-padding);
+    border-radius: var(--r-task);
+}
+
+.icon {
+    height: 100%;
+    width: 100%;
+}
+
+hr {
+    border-style: solid;
+    margin-right: 0px;
+    width: var(--h-min-bar-width);
+    height: 0px;
+}
+.hr-long {
+    width: var(--h-maj-bar-width)
+}
+
+#todo-title {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    align-items: center;
+    margin-bottom: var(--v-task-height);
+
+    h1 {
+        color: var(--light-text-color);
+        font-size: var(--f-title);
+    }
+    hr {
+        margin-bottom: 10px; /* TODO variable? */
+    }
+}
+
+#add-item-holder {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    margin-bottom: var(--v-task-height);
+
+    #add-item-submit { /* TODO add hover */
+        height: var(--v-task-height);
+        width: var(--h-icon-area-width);
+        background:none;
+        border: none;
+        padding: var(--v-icon-padding);
+        .icon {
+            fill: var(--maj-text-color);
+        }
+    }
+    
+}
+
+.todo-item-desc {
+    display: inline;
+    font-family: "Courier Prime";
+    font-size: var(--f-maj);
+    padding: var(--h-task-padding);
+    min-height: var(--v-desc-box-min-height);
+    background: var(--write-color);
+    color: var(--write-text-color);
+    resize:none;
+    border: none;
+    border-radius: var(--r-task);
+    margin-top: var(--v-edit-box-spacing);
+}
+
+.todo-item-desc:focus {
+    outline: var(--outline-style);
+}
+
+.todo-item-holder {
+    width: 100%;
+    min-height: var(--v-task-height);
+    display: grid;
+    grid-template-columns: var(--h-icon-area-width) 1fr;
+    grid-template-rows: var(--v-task-height) auto;
+    gap: none;
+    padding-bottom: var(--v-task-spacing);
+    
+    .todo-item-status-holder {
+        display: inline;
+        grid-row: 1;
+        grid-column: 1;
+    }
+    .todo-item-priority-holder {
+        display: none;
+        grid-row: 1 / 3;
+        grid-column: 1;
+    }
+    .todo-item-desc {
+        display: inline;
+        max-width: 75%;
+        min-height: var(--f-min);
+        height: 0px;
+        font-size: var(--f-min);
+        padding-top: 0px;
+        padding-bottom: 0px;
+        initial-value: "";
+        background: none;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow: hidden;
+        grid-row: 2;
+        grid-column: 2;
+        
+    }
+    .todo-item-desc:placeholder-shown {
+        display: none;
+    }
+}
+
+.todo-item-holder-focused {
+    .todo-item-title-holder {
+        background-color: var(--light-color);
+        color: var(--light-text-color);
+        .todo-item-check {
+            background: var(--maj-color);
+        }
+    }
+    .todo-item-status-holder {
+        display: none;
+    }
+    .todo-item-priority-holder {
+        display: flex;
+    }
+    .todo-item-desc {
+        max-width: none;
+        min-height: var(--v-desc-box-min-height);
+        padding-top: var(--h-task-padding);
+        font-size: var(--f-maj);
+        text-overflow: none;
+        white-space: initial;
+        overflow: initial;
+        background: var(--write-color);
+    }
+    .todo-item-desc:placeholder-shown {
+       display: inline;
+    }
+}
+
+
+
+.todo-item-status-holder {
+    box-sizing: border-box;
+    max-width: var(--h-icon-area-width);
+    height: var(--v-task-height);
+    padding: var(--v-icon-padding);
+    .icon {
+        width: 100%;
+        height: 100%;
+        fill: var(--alert-color);
+        stroke: var(--alert-color);
+    }
+}
+
+.todo-item-title-holder {
+    width: 100%;
+    height: var(--v-task-height);
+    display: flex;
+    flex-direction: row;
+    background: var(--maj-color);
+    border-radius: var(--r-task);
+    
+
+    input[type=text] {
+        background: none;
+        outline: none;
+        color: var(--maj-text-color)
+    }
+
+    .todo-item-check-holder {
+        height: 100%;
+        width: var(--v-task-height);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-right: 3px; /* TODO variable */
+    }
+    .todo-item-check {
+        width: var(--v-check-box-height);
+        height: var(--v-check-box-height);
+        border: none;
+        border-radius: var(--r-check);
+        background-color: var(--light-color);
+        display: flex;
+        align-items: flex-end;
+
+        .icon {
+            flex-shrink: 0;
+            fill: var(--light-text-color);
+            display: none;
+            width: var(--v-check-box-height);
+            height: var(--v-check-box-height);
+        }
+    }
+
+    .todo-item-check:hover {
+        .icon {
+            display: inline;
+        }
+    }
+}
+
+.todo-item-title-holder-checked {
+    input[type=text] {
+        text-decoration: line-through;
+    }
+    .todo-item-check .icon {
+        display: inline;
+        fill: var(--check-color);
+        filter: drop-shadow(-2px 0px 0.5px var(--check-color-shadow));
+    }
+}
+
+.todo-item-title-holder:focus-within {
+    outline: var(--outline-style);
+}
+
+.todo-item-priority-holder {
+    box-sizing: border-box;
+    width: var(--h-icon-box-width);
+    height: var(--v-icon-box-height);
+    display: flex;
+    padding: 3px;
+    flex-direction: column;
+    align-items: center;
+    background: var(--maj-color);
+    gap: var(--v-priority-box-gap);
+    border-radius: var(--r-priority-box);
+
+    button {
+        width: var(--v-task-spacing);
+        aspect-ratio: 1;
+        background: none;
+        border: none;
+        padding: calc(0.75 * var(--v-icon-padding));
+        border-radius: var(--r-priority-box);
+        
+        .icon {
+            width: 100%;
+            height: 100%;
+            fill: var(--maj-text-color);
+            stroke: var(--maj-text-color);
+        }
+    }
+
+    .todo-item-priority-button-selected {
+        background: var(--light-color);
+
+        .icon {
+            fill: var(--light-text-color);
+            stroke: var(--light-text-color);
+        }
+    }
+
+    .todo-item-delete {
+        background: var(--maj-color);
+        width: var(--v-check-box-height);
+        height: var(--v-check-box-height);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: var(--r-check);
+    }
+}
+
+.todo-item-priority-holder :hover {
+    .icon {
+        width: 100%;
+        height: 100%;
+    }
+}
+
+#done-title {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: var(--v-task-height);
+
+    h3 {
+        color: var(--light-text-color);
+        font-size: var(--f-min);
+    }
+
+    #clear-all-button {
+        font-family: "Courier Prime";
+        font-size: var(--f-min);
+        color: var(--light-text-color);
+        background: none;
+        border: none;
+
+        .icon {
+            width: var(--f-min);
+            height: calc(var(--f-min) - 3px);
+            fill: var(--light-text-color);
+        }
+    }
+    
+}
+
+#to-top-holder {
+    margin-top: var(--v-bottom-padding);
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    #to-top-button {
+        font-family: "Courier Prime";
+        font-size: var(--f-min);
+        color: var(--light-color);
+        background: none;
+        border: none;
+
+        .icon {
+            height: calc(var(--f-min) - 3px);
+            width: var(--f-min);
+            fill: var(--light-color);
+            stroke: none;
+        }
+    }
+}
+
+#credits-holder {
+    width: 100%;
+    margin-top: var(--v-task-spacing);
+    p {
+        width: 100%;
+        text-align: right;
+        margin: 3px 0;
+        color: var(--light-color);
+        font-size: var(--f-min);
+    }
+    .icon {
+        height:calc(var(--f-min) - 0px);
+        width: var(--f-min);
+        fill: var(--light-color)
+    }
+}

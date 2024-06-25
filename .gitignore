@@ -1,0 +1,6 @@
+node_modules
+# ts compiles
+src
+
+.DS_Store
+.env
