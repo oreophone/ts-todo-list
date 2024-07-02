@@ -69,8 +69,12 @@ export class TodoItem {
     // partial function to give selected children onfocus
     private focusEvent(): (_: Event) => void {
         return (_: Event) => {
-            let itemDiv = document.getElementById(`todo-item-holder-${this.id}`);
-            itemDiv!.classList.add("todo-item-holder-focused");
+            let itemDiv = document.getElementById(`todo-item-holder-${this.id}`)!;
+            itemDiv.classList.add("todo-item-holder-focused");
+            (<HTMLElement>itemDiv.getElementsByClassName("todo-item-title")[0])
+            .tabIndex = 0;
+            (<HTMLElement>itemDiv.getElementsByClassName("todo-item-desc")[0])
+            .tabIndex = 0;
         }
     }
     // partial function to give selected children onunfocus
@@ -142,9 +146,15 @@ export class TodoItem {
             className: "todo-item-title",
             type: "text",
             value: this.title,
+            tabIndex: "-1",
             placeholder: "Add a title...",
-            onkeyup: (_: Event) => {
+            onkeyup: (e: KeyboardEvent) => {
                 this.set_title(itemTitle.value);
+                if (e.key == "Enter") {
+                    (<HTMLElement>document.getElementById(`todo-item-holder-${this.id}`)!
+                    .getElementsByClassName('todo-item-desc')[0])
+                    .focus();
+                }
             },
             onfocus: this.focusEvent(),
         });
@@ -158,6 +168,12 @@ export class TodoItem {
         itemCheck.innerHTML = buttonSVGs.check;
         Object.assign(itemCheck, {
             className: "todo-item-check",
+            onkeyup: (e: KeyboardEvent) => {
+                if (e.key == " ") {
+                    titleDiv.focus();
+                    itemCheck.blur();
+                }
+            }
         })
         checkDiv.appendChild(itemCheck);
         titleDiv.appendChild(checkDiv);
@@ -173,7 +189,7 @@ export class TodoItem {
         Object.assign(itemDiv, {
             className: "todo-item-holder",
             id: `todo-item-holder-${this.id}`,
-            tabIndex: 0,
+            tabIndex: "-1",
             onfocus: this.focusEvent(),
         });
         itemDiv.addEventListener("focusout",this.unfocusEvent());
@@ -187,8 +203,12 @@ export class TodoItem {
             className: "todo-item-desc",
             value: this.description === null ? "" : this.description,
             placeholder: "Include a short description...",
-            onkeyup: (_: Event) => {
+            tabIndex: "-1",
+            onkeyup: (e: KeyboardEvent) => {
                 this.set_description(itemDesc.value)
+                if (e.key == "Enter") {
+                    itemDesc.blur()
+                }
             },
             onfocus: this.focusEvent(),
         });
@@ -200,7 +220,18 @@ export class TodoItem {
         // <div class="todo-item-status-holder">
         var statusDiv = <HTMLDivElement>document.createElement('div');
         statusDiv.className = "todo-item-status-holder";
-        statusDiv.innerHTML = this.priority == 'none' ? "" : buttonSVGs[this.priority];
+        if (this.isCompleted) {
+            var deleteButton = document.createElement('button');
+            Object.assign(deleteButton, {
+                className: "todo-item-delete",
+                innerHTML: buttonSVGs.trash,
+            });
+            statusDiv.appendChild(deleteButton);
+        }
+        else {
+            statusDiv.innerHTML = this.priority == 'none' ? "" : buttonSVGs[this.priority];
+        }
+        
         itemDiv.appendChild(statusDiv);
         
         return itemDiv

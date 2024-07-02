@@ -14,21 +14,23 @@ export class TodoList {
 
     // sets up base listeners
     initListeners(): void {
-        let addItemTitle = <HTMLInputElement>document.getElementById("add-item-title");
-        let addItemSubmit = document.getElementById("add-item-submit");
-        addItemSubmit!.addEventListener("click", (_) => {
-            this.addTask(new TodoItem(
-                addItemTitle!.value,
-                null,
-                <priority>"none",
-                false,
-                this.generateUniqueID()
-            ));
-            addItemTitle.value = ""
-        })
+        document.getElementById("add-item-submit")!.onclick = this.addEvent.bind(this);
+        let titleInput = <HTMLInputElement>document.getElementById("add-item-title")!; 
+        titleInput.onkeyup = (e: KeyboardEvent) => {
+            if (e.key == "Enter") {
+                this.addEvent()
+            }
+        }
+        document.getElementById("clear-all-button")!.onclick
+            = this.clearAllDone.bind(this);
 
-        this.updateButtonListeners();
+        document.onkeyup = (e: KeyboardEvent) => {
+            if (e.key == "Escape") {
+                (<HTMLElement>document.activeElement!).blur()
+            }
+        }
         
+        this.updateButtonListeners();
     }
     
     private generateUniqueID(): number {
@@ -37,6 +39,23 @@ export class TodoList {
         }
         let curIDs: number[] = this.tasks.map((elem) => elem.get_id());
         return Math.max.apply(this, curIDs) + 1;
+    }
+
+    // add item event
+    private addEvent(_: Event | null = null): void {
+        let addItemTitle = <HTMLInputElement>document.getElementById("add-item-title");
+        if (addItemTitle.value == "") {
+            addItemTitle.focus();
+            return
+        }
+        this.addTask(new TodoItem(
+            addItemTitle!.value,
+            null,
+            <priority>"none",
+            false,
+            this.generateUniqueID()
+        ));
+        addItemTitle!.value = ""
     }
 
     // partial function for delete event
@@ -76,12 +95,10 @@ export class TodoList {
                 statusDiv[0].innerHTML = '';
                 return
             }
-            
+
             statusDiv[0].innerHTML = buttonSVGs[<'low' | 'high'>priority];
             let newPriorityButton = curButtonDiv!.getElementsByClassName(`todo-item-priority-button-${priority}`);
             newPriorityButton[0].classList.add("todo-item-priority-button-selected");
-
-            
             
         }
     }
@@ -125,8 +142,11 @@ export class TodoList {
     ): void {
         let id = task.get_id();
         let curDiv = document.getElementById(`todo-item-holder-${id}`);
-        let curButton: HTMLElement = <HTMLElement>curDiv!.getElementsByClassName(`todo-item-${type}`)[0];
-        curButton!.onclick = buttonFunction(id)
+        let curButtons: Element[] = Array.from(curDiv!.getElementsByClassName(`todo-item-${type}`));
+        curButtons.forEach((element: Element) => {
+            let htmlElement = <HTMLElement>element!;
+            htmlElement.onclick = buttonFunction(id)
+        });
     }
     
 
@@ -171,6 +191,13 @@ export class TodoList {
         let curTaskDiv = document.getElementById(`todo-item-holder-${id}`);
         curTaskDiv!.remove();
         this.updateButtonListeners()
+    }
+
+    // Clears all done tasks
+    clearAllDone(): void {
+        let doneList = this.tasks.filter(elem => elem.isCompleted);
+        let doneIds = doneList.map(elem => elem.get_id());
+        doneIds.forEach(id => this.removeTask(id));
     }
 
     // Renders tasks in respective holder
