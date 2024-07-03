@@ -1,4 +1,4 @@
-# TypeScript TODO List   - v0.01
+# TypeScript TODO List
 Written using vanilla TypeScript/HTML/CSS, Webpack, and the LocalStorage API. Designed using Figma, with icons imported from FontAwesome. My first TypeScript project!
 
 
@@ -7,12 +7,17 @@ Written using vanilla TypeScript/HTML/CSS, Webpack, and the LocalStorage API. De
 [Figma Design File](https://www.figma.com/design/lGn1Yzg16U9GaBCMCTtIwU/ts-todo?node-id=0-1&t=VZffgpVE6XelSDoo-0)
 
 ## Features
-- [x] (26/06/24 v0.01) Working prototype 
+- [x] (26/06/24) Working prototype 
 - [ ] Time/Date features
 - [ ] Responsiveness (e.g ::hover), Animations
 - [ ] Themes
-- [x] UI Revision, Accessibility 
-- [x] Code/Directory clean-up, commenting
+- [x] (03/07/24) UI Revision, Accessibility 
+- [x] (03/07/24) Code/Directory clean-up, commenting
+
+## TODO whenever I come back to this
+- fix weird alignment issues
+- make it chromium, safari, etc compatible
+- host this on ur portfolio when u make one
 
 ---
 Thanks for checking out my project!
