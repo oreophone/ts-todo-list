@@ -8,6 +8,7 @@ export class TodoList {
         this.tasks = this.getListData()
         this.renderItems()
         this.initListeners()
+        this.updateDisplay()
         // saves to local when site is closed/refreshed by user
         window.onbeforeunload = (_) => this.exportListData();
     }
@@ -32,6 +33,29 @@ export class TodoList {
         
         this.updateButtonListeners();
     }
+
+    // Updates display based on list state
+    updateDisplay(): void {
+        var todoItemSeparator = document.getElementById("todo-done-separator")!;
+        var doneTitle = document.getElementById("done-title")!;
+        var footerBorderHolder = document.getElementById("footer-border-holder")!;
+        var creditsHolder = document.getElementById("credits-holder")!;
+        let doneList = this.tasks.filter(elem => elem.isCompleted);
+        if (doneList.length == 0) {
+            todoItemSeparator.style.display = "none";
+            doneTitle.style.display = "none";
+        } else {
+            todoItemSeparator.style.display = "auto";
+            doneTitle.style.display = "flex";
+        }
+        if (this.tasks.length == 0) {
+            creditsHolder.style.display = "none";
+            footerBorderHolder.style.display = "none";
+        } else {
+            creditsHolder.style.display = "inline";
+            footerBorderHolder.style.display = "flex";
+        }
+    }
     
     private generateUniqueID(): number {
         if (this.tasks.length == 0) {
@@ -55,12 +79,13 @@ export class TodoList {
             false,
             this.generateUniqueID()
         ));
-        addItemTitle!.value = ""
+        addItemTitle!.value = "";
+        this.updateDisplay();
     }
 
     // partial function for delete event
     private deleteEvent(id: number): (a: Event) => void {
-        return (_: Event) => {this.removeTask(id)}
+        return (_: Event) => {this.removeTask(id); this.updateDisplay()}
     }
 
     // partial function for check event 
@@ -72,6 +97,7 @@ export class TodoList {
             curTask.toggleCheck();
             curTaskDiv!.remove();
             this.renderItem(curTask);
+            this.updateDisplay();
         }
     }
 
@@ -198,6 +224,7 @@ export class TodoList {
         let doneList = this.tasks.filter(elem => elem.isCompleted);
         let doneIds = doneList.map(elem => elem.get_id());
         doneIds.forEach(id => this.removeTask(id));
+        this.updateDisplay();
     }
 
     // Renders tasks in respective holder

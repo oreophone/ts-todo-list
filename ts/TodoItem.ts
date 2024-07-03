@@ -71,22 +71,18 @@ export class TodoItem {
         return (_: Event) => {
             let itemDiv = document.getElementById(`todo-item-holder-${this.id}`)!;
             itemDiv.classList.add("todo-item-holder-focused");
-            (<HTMLElement>itemDiv.getElementsByClassName("todo-item-title")[0])
-            .tabIndex = 0;
-            (<HTMLElement>itemDiv.getElementsByClassName("todo-item-desc")[0])
-            .tabIndex = 0;
         }
     }
     // partial function to give selected children onunfocus
     private unfocusEvent(): (_: Event) => void {
         return (_: Event) => {
-            let itemDiv = document.getElementById(`todo-item-holder-${this.id}`);
+            let itemDiv = document.getElementById(`todo-item-holder-${this.id}`)!;
             // runs after dom fully updates focus
             setTimeout(() => {
-                if (!itemDiv!.contains(document.activeElement)) {
-                    itemDiv!.classList.remove("todo-item-holder-focused");
+                if (!itemDiv.contains(document.activeElement)) {
+                    itemDiv.classList.remove("todo-item-holder-focused");
                 }
-            },0)
+            },0);
             
         }
     }
@@ -170,8 +166,7 @@ export class TodoItem {
             className: "todo-item-check",
             onkeyup: (e: KeyboardEvent) => {
                 if (e.key == " ") {
-                    titleDiv.focus();
-                    itemCheck.blur();
+                    itemTitle.focus();
                 }
             }
         })
