@@ -40,13 +40,18 @@ export class TodoList {
         var doneTitle = document.getElementById("done-title")!;
         var footerBorderHolder = document.getElementById("footer-border-holder")!;
         var creditsHolder = document.getElementById("credits-holder")!;
+        var todoHeading = document.getElementById("todo-heading")!;
+        var doneHeading = document.getElementById("done-heading")!;
         let doneList = this.tasks.filter(elem => elem.isCompleted);
+        let numTodos = this.tasks.length - doneList.length;
         if (doneList.length == 0) {
             todoItemSeparator.style.display = "none";
             doneTitle.style.display = "none";
+            doneHeading.textContent = "\\\\ done"
         } else {
             todoItemSeparator.style.display = "auto";
             doneTitle.style.display = "flex";
+            doneHeading.textContent = `\\\\ done (${doneList.length})`
         }
         if (this.tasks.length == 0) {
             creditsHolder.style.display = "none";
@@ -55,6 +60,11 @@ export class TodoList {
             creditsHolder.style.display = "inline";
             footerBorderHolder.style.display = "flex";
         }
+
+        todoHeading.textContent = numTodos == 0 ?
+            "\\\\ todo" : `\\\\ todo (${this.tasks.length - doneList.length})`;
+        document.title = numTodos == 0 ?
+            "\\\\ ts-todo" : `\\\\ ts-todo (${this.tasks.length - doneList.length})`;
     }
     
     private generateUniqueID(): number {

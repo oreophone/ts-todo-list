@@ -11,8 +11,8 @@ Written using vanilla TypeScript/HTML/CSS, Webpack, and the LocalStorage API. De
 - [ ] Time/Date features
 - [ ] Responsiveness (e.g ::hover), Animations
 - [ ] Themes
-- [ ] UI Revision, Accessibility 
-- [ ] Code/Directory clean-up, commenting
+- [x] UI Revision, Accessibility 
+- [x] Code/Directory clean-up, commenting
 
 ---
 Thanks for checking out my project!
